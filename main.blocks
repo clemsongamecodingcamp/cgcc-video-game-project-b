@@ -1,1 +1,52 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><block type="function_definition" id=";~AoJr(^|,#ru79Tl~B)" x="260" y="0"><mutation name="Start Screen" functionid="afkuaRwqW~^5l=6Tdl=x"/><field name="function_name">Start Screen</field><statement name="STACK"><block type="game_show_long_text" id="YS{J}mO-7d,OHd;V*t|1"><field name="layout">DialogLayout.Bottom</field><value name="str"><shadow type="text" id="JbBx1tWSD|}1]|pN|h8G"><field name="TEXT">This is my game. - By a Clemson First-Year Student</field></shadow></value></block></statement></block><block type="pxt-on-start" id="oAZg0#q/cu:_+mebI:-}" x="0" y="20"><statement name="HANDLER"><block type="function_call" id="knBM*x8{7KiC]wSHOZMS"><mutation name="Start Screen" functionid="afkuaRwqW~^5l=6Tdl=x"/></block></statement></block></xml>
+<xml xmlns="https://developers.google.com/blockly/xml"><variables><variable type="KIND_SpriteKind" id="U{j}SXH}Xpg-%0x:sFQ=">Player</variable><variable type="KIND_SpriteKind" id="]UenB!es)Rw$$awnxR1l">Projectile</variable><variable type="KIND_SpriteKind" id="~qJI`Ek1d!sT!^.Ka~_4">Food</variable><variable type="KIND_SpriteKind" id="^noaE~c]E?^I|]9Ga!.%">Enemy</variable><variable id="X[-K`sI?v7K;zFu^(iwB">playerSprite</variable><variable id="NU3,wNJ(TO{V)Vi]-3`D">duckSprite</variable></variables><block type="pxt-on-start" id="oAZg0#q/cu:_+mebI:-}" x="0" y="10"><statement name="HANDLER"><block type="function_call" id="knBM*x8{7KiC]wSHOZMS"><mutation name="Start Screen" functionid="afkuaRwqW~^5l=6Tdl=x"/><next><block type="variables_set" id="$?5Kj~*Yqe{;[p~_foid"><field name="VAR" id="X[-K`sI?v7K;zFu^(iwB">playerSprite</field><value name="VALUE"><shadow xmlns="http://www.w3.org/1999/xhtml" type="math_number"><field name="NUM">0</field></shadow><block type="spritescreate" id="v%I579:@)kPb+R$Q4|P}"><value name="img"><shadow type="screen_image_picker" id="qC2Ev?e{?[@R$b%mS?Uo"><field name="img">img`
+. . . . . . . . . . . . . . . . 
+. . . . . . 6 6 6 6 . . . . . . 
+. . . . 6 6 6 5 5 6 6 6 . . . . 
+. . . 7 7 7 7 6 6 6 6 6 6 . . . 
+. . 6 7 7 7 7 8 8 8 1 1 6 6 . . 
+. . 7 7 7 7 7 8 8 8 1 1 5 6 . . 
+. 6 7 7 7 7 8 8 8 8 8 5 5 6 6 . 
+. 6 7 7 7 8 8 8 6 6 6 6 5 6 6 . 
+. 6 6 7 7 8 8 6 6 6 6 6 6 6 6 . 
+. 6 8 7 7 8 8 6 6 6 6 6 6 6 6 . 
+. . 6 8 7 7 8 6 6 6 6 6 8 6 . . 
+. . 6 8 8 7 8 8 6 6 6 8 6 6 . . 
+. . . 6 8 8 8 8 8 8 8 8 6 . . . 
+. . . . 6 6 8 8 8 8 6 6 . . . . 
+. . . . . . 6 6 6 6 . . . . . . 
+. . . . . . . . . . . . . . . . 
+`</field></shadow></value><value name="kind"><shadow type="spritekind" id="xss.qc1cALEMyt8fTr(i"><field name="MEMBER">Player</field></shadow></value></block></value><next><block type="variables_set" id="XVRe]6b@Q9r8re*rNDS-"><field name="VAR" id="NU3,wNJ(TO{V)Vi]-3`D">duckSprite</field><value name="VALUE"><shadow type="math_number" id="CV/61:?DDi^QOeaY+Q[-"><field name="NUM">0</field></shadow><block type="spritescreate" id="0oz+1du]Y;6sc^XhSjr)"><value name="img"><shadow type="screen_image_picker" id="SCl7/lcsI4PpgesqPm0w"><field name="img">img`
+. . . . . . . . . . b 5 b . . . 
+. . . . . . . . . b 5 b . . . . 
+. . . . . . b b b b b b . . . . 
+. . . . . b b 5 5 5 5 5 b . . . 
+. . . . b b 5 d 1 f 5 5 d f . . 
+. . . . b 5 5 1 f f 5 d 4 c . . 
+. . . . b 5 5 d f b d d 4 4 . . 
+. b b b d 5 5 5 5 5 4 4 4 4 4 b 
+b d d d b b d 5 5 4 4 4 4 4 b . 
+b b d 5 5 5 b 5 5 5 5 5 5 b . . 
+c d c 5 5 5 5 d 5 5 5 5 5 5 b . 
+c b d c d 5 5 b 5 5 5 5 5 5 b . 
+. c d d c c b d 5 5 5 5 5 d b . 
+. . c b d d d d d 5 5 5 b b . . 
+. . . c c c c c c c c b b . . . 
+. . . . . . . . . . . . . . . . 
+`</field></shadow></value><value name="kind"><shadow type="spritekind" id="pOK)6!w4{9dzIr]S@QuN"><field name="MEMBER">Enemy</field></shadow></value></block></value><next><block type="tilemap_editor" id="xQB^UsN)yMpRLP3sO/%_"><field name="tilemap">tiles.createTilemap(hex`1000100003030303030303030303030303030303030202040202040202040202040202030303030303030303030303030303030303000000000000000000000000000003030000000000000000000000000000030300000000000000000000000000000303000000000000000000000000000003030303030303030303030303030303030301010101010101010101010101010303010101010101010101010101010103030101010101010101010101010101030301010101010101010101010101010303010101010101010101010101010103030101010101010101010101010101030301010101010101010101010101010303030303030303030303030303030303`, img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile4,myTiles.tile3], TileScale.Sixteen)</field></block></next></block></next></block></next></block></statement></block><block type="function_definition" id=";~AoJr(^|,#ru79Tl~B)" x="590" y="0"><mutation name="Start Screen" functionid="afkuaRwqW~^5l=6Tdl=x"/><field name="function_name">Start Screen</field><statement name="STACK"><block type="game_show_long_text" id="YS{J}mO-7d,OHd;V*t|1"><field name="layout">DialogLayout.Bottom</field><value name="str"><shadow type="text" id="JbBx1tWSD|}1]|pN|h8G"><field name="TEXT">This is my game. - By a Clemson First-Year Student</field></shadow></value></block></statement></block></xml>
