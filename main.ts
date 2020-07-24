@@ -5,8 +5,7 @@ function Start_Screen () {
     game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
 let playerSprite: Sprite = null
-Start_Screen()
-scene.centerCameraAt(0, 70)
+scene.centerCameraAt(0, 84)
 info.setScore(0)
 info.setLife(3)
 info.startCountdown(10)
@@ -64,3 +63,4 @@ tiles.setTilemap(tiles.createTilemap(hex`100010000303030303030303030303030303030
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile4,myTiles.tile3,myTiles.tile5,myTiles.tile7,myTiles.tile8], TileScale.Sixteen))
+tiles.placeOnTile(duckSprite, tiles.getTileLocation(randint(0, 9), 2))
