@@ -1,6 +1,8 @@
 game.onGameUpdateWithHeading(function () {
-    if (Math.mod(game.runtime(), 2000) <= 50) {
-        SpawnDuck()
+    if (Math.mod(game.runtime(), 2000) <= 40) {
+        if (spawnRate > randint(0, 999)) {
+            SpawnDuck()
+        }
     }
     controller.moveSprite(playerSprite)
 })
@@ -28,13 +30,18 @@ function SpawnDuck () {
         `, SpriteKind.Enemy)
     tiles.placeOnTile(duckSprite, tiles.getTileLocation(randint(0, 9), 2))
 }
+function NormalDiff () {
+    spawnRate = 500
+}
 let duckSprite: Sprite = null
+let spawnRate = 0
 let playerSprite: Sprite = null
 let diff = 1
 scene.centerCameraAt(0, 84)
+NormalDiff()
 info.setScore(0)
 info.setLife(3)
-info.startCountdown(9999999999)
+info.startCountdown(6000)
 playerSprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . 6 6 6 6 . . . . . . 
