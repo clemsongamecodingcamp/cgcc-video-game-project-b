@@ -79,12 +79,15 @@ game.onGameUpdateWithHeading(function () {
         }
     }
     controller.moveSprite(playerSprite)
-    info.setScore(headingRight)
+    info.setScore(0)
     if (sprites.heading(playerSprite) > 15 && sprites.heading(playerSprite) < 165) {
         headingRight = 1
     }
     if (sprites.heading(playerSprite) > 195 && sprites.heading(playerSprite) < 345) {
         headingRight = 0
+    }
+    if (duckSprite.x >= 140) {
+        duckSprite.setVelocity(sprites.speed(duckSprite) * -1, 0)
     }
 })
 function Start_Screen () {
@@ -110,6 +113,7 @@ function SpawnDuck () {
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Enemy)
     tiles.placeOnTile(duckSprite, tiles.getTileLocation(randint(0, 9), 2))
+    duckSprite.setVelocity(randint(-30, 30), 0)
 }
 function NormalDiff () {
     spawnRate = 500
