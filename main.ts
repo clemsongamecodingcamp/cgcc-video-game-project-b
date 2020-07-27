@@ -79,22 +79,22 @@ game.onGameUpdateWithHeading(function () {
         }
     }
     controller.moveSprite(playerSprite)
-    info.setScore(0)
+    info.setScore(sprites.speed(playerSprite))
     if (sprites.heading(playerSprite) > 15 && sprites.heading(playerSprite) < 165) {
         headingRight = 1
     }
     if (sprites.heading(playerSprite) > 195 && sprites.heading(playerSprite) < 345) {
         headingRight = 0
     }
-    if (duckSprite.x >= 140) {
-        duckSprite.setVelocity(sprites.speed(duckSprite) * -1, 0)
+    for (let thisDuck of ducks) {
+        if (thisDuck.x >= 152) {
+            sprites.setDataNumber(thisDuck, "direction", -1)
+        }
+        thisDuck.setVelocity(sprites.speed(thisDuck) * sprites.readDataNumber(thisDuck, "direction"), 0)
     }
 })
-function Start_Screen () {
-    game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
-}
 function SpawnDuck () {
-    duckSprite = sprites.create(img`
+    spawnDuckSprite = sprites.create(img`
         . . . . . . . . . . b 5 b . . . 
         . . . . . . . . . b 5 b . . . . 
         . . . . . . b b b b b b . . . . 
@@ -112,13 +112,22 @@ function SpawnDuck () {
         . . . c c c c c c c c b b . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Enemy)
-    tiles.placeOnTile(duckSprite, tiles.getTileLocation(randint(0, 9), 2))
-    duckSprite.setVelocity(randint(-30, 30), 0)
+    ducks.push(spawnDuckSprite)
+    tiles.placeOnTile(spawnDuckSprite, tiles.getTileLocation(randint(0, 9), 2))
+    if (Math.percentChance(50)) {
+        sprites.setDataNumber(spawnDuckSprite, "direction", -1)
+    } else {
+        sprites.setDataNumber(spawnDuckSprite, "direction", 1)
+    }
+    spawnDuckSprite.setVelocity(randint(0, 30), 0)
+}
+function Start_Screen () {
+    game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
 function NormalDiff () {
     spawnRate = 500
 }
-let duckSprite: Sprite = null
+let spawnDuckSprite: Sprite = null
 let headingRight = 0
 let spawnRate = 0
 let catIdleRight = 0
@@ -126,6 +135,8 @@ let catIdleLeft: Image = null
 let catWalkRight: animation.Animation = null
 let catWalkLeft: animation.Animation = null
 let playerSprite: Sprite = null
+let ducks: Sprite[] = []
+ducks = []
 let diff = 1
 scene.centerCameraAt(0, 84)
 animate()
