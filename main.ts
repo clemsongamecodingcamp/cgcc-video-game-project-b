@@ -100,6 +100,13 @@ game.onGameUpdateWithHeading(function () {
                 buttonTime.removeAt(index)
             }
         }
+        for (let index = 0; index <= hatchTime.length; index++) {
+            if (game.runtime() >= hatchTime[index]) {
+                tiles.setTileAt(tiles.getTileLocation(hatchX[index], 2), myTiles.tile3)
+                hatchX.removeAt(index)
+                hatchTime.removeAt(index)
+            }
+        }
     }
 })
 function SpawnDuck () {
@@ -130,13 +137,20 @@ function SpawnDuck () {
     }
     spawnDuckSprite.setVelocity(randint(10, 30), 0)
 }
+scene.onOverlapTile(SpriteKind.Enemy, sprites.dungeon.hazardHole, function (sprite, location) {
+    sprite.destroy()
+    info.changeScoreBy(100)
+})
 function Start_Screen () {
     game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (sprite, location) {
     buttonX.push(scene.getTileColCoordinate(location))
-    buttonTime.push(game.runtime() + 3000)
+    buttonTime.push(game.runtime() + 5000)
+    hatchX.push(scene.getTileColCoordinate(location))
+    hatchTime.push(game.runtime() + 500)
     tiles.setTileAt(location, sprites.dungeon.buttonTealDepressed)
+    tiles.setTileAt(tiles.getTileLocation(scene.getTileColCoordinate(location), 2), sprites.dungeon.hazardHole)
 })
 function NormalDiff () {
     spawnRate = 500
@@ -148,6 +162,8 @@ let catIdleRight = 0
 let catIdleLeft: Image = null
 let catWalkRight: animation.Animation = null
 let catWalkLeft: animation.Animation = null
+let hatchTime: number[] = []
+let hatchX: number[] = []
 let buttonTime: number[] = []
 let buttonX: number[] = []
 let playerSprite: Sprite = null
@@ -177,7 +193,7 @@ playerSprite = sprites.create(img`
     . f f . . f f . . f f . . . 
     `, SpriteKind.Player)
 playerSprite.setPosition(80, 110)
-tiles.setTilemap(tiles.createTilemap(hex`1000100003030303030303030303030303030303050505050505050505050508030303030204020402020402040205030303030306060606060606060606050303030303010901090101090109010503030303030109010901010901090105030303030301090109010109010901050303030303010901090101090109010503030303030107010701010701070105030303030305050505050505050505050303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303`, img`
+tiles.setTilemap(tiles.createTilemap(hex`10001000030303030303030303030303030303030505050505050505050505080303030304020204020204020204050a0303030306060606060606060606050303030303090101090101090101090503030303030901010901010901010905030303030309010109010109010109050303030303090101090101090101090503030303030701010701010701010705030303030305050505050505050505050303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303`, img`
     . . . . . . . . . . . . . . . . 
     2 2 2 2 2 2 2 2 2 2 2 . . . . . 
     . . . . . . . . . . 2 . . . . . 
@@ -194,7 +210,9 @@ tiles.setTilemap(tiles.createTilemap(hex`100010000303030303030303030303030303030
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    `, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile4,myTiles.tile3,myTiles.tile5,myTiles.tile8,sprites.dungeon.buttonOrange,sprites.dungeon.buttonTealDepressed,myTiles.tile9], TileScale.Sixteen))
+    `, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile4,myTiles.tile3,myTiles.tile5,myTiles.tile8,sprites.dungeon.buttonOrange,sprites.dungeon.buttonTealDepressed,myTiles.tile9,sprites.dungeon.hazardHole], TileScale.Sixteen))
 SpawnDuck()
 buttonX = []
 buttonTime = []
+hatchX = []
+hatchTime = []
