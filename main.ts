@@ -96,11 +96,6 @@ game.onGameUpdateWithHeading(function () {
         thisDuck.setVelocity(sprites.speed(thisDuck) * sprites.readDataNumber(thisDuck, "direction"), 0)
     }
 })
-scene.onOverlapTile(SpriteKind.Player, myTiles.transparency16, function (sprite, location) {
-    buttonX = []
-    buttonY = []
-    buttonTime = []
-})
 function SpawnDuck () {
     spawnDuckSprite = sprites.create(img`
         . . . . . . . . . . b 5 b . . . 
@@ -132,19 +127,22 @@ function SpawnDuck () {
 function Start_Screen () {
     game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (sprite, location) {
+    buttonX.push(scene.getTileColCoordinate(location))
+    buttonTime.push(game.runtime() + 3000)
+})
 function NormalDiff () {
     spawnRate = 500
 }
 let spawnDuckSprite: Sprite = null
-let buttonTime: number[] = []
-let buttonY: number[] = []
-let buttonX: number[] = []
 let headingRight = 0
 let spawnRate = 0
 let catIdleRight = 0
 let catIdleLeft: Image = null
 let catWalkRight: animation.Animation = null
 let catWalkLeft: animation.Animation = null
+let buttonTime: number[] = []
+let buttonX: number[] = []
 let playerSprite: Sprite = null
 let ducks: Sprite[] = []
 ducks = []
@@ -172,7 +170,7 @@ playerSprite = sprites.create(img`
     . f f . . f f . . f f . . . 
     `, SpriteKind.Player)
 playerSprite.setPosition(80, 110)
-tiles.setTilemap(tiles.createTilemap(hex`1000100003030303030303030303030303030303050505050505050505050508030303030204020402020402040205030303030306060606060606060606050303030303010101010101010101010503030303030101010101010101010105030303030301010101010101010101050303030303010101010101010101010503030303030107010701010701070105030303030305050505050505050505050303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303`, img`
+tiles.setTilemap(tiles.createTilemap(hex`1000100003030303030303030303030303030303050505050505050505050508030303030204020402020402040205030303030306060606060606060606050303030303010901090101090109010503030303030109010901010901090105030303030301090109010109010901050303030303010901090101090109010503030303030107010701010701070105030303030305050505050505050505050303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303`, img`
     . . . . . . . . . . . . . . . . 
     2 2 2 2 2 2 2 2 2 2 2 . . . . . 
     . . . . . . . . . . 2 . . . . . 
@@ -189,5 +187,7 @@ tiles.setTilemap(tiles.createTilemap(hex`100010000303030303030303030303030303030
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    `, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile4,myTiles.tile3,myTiles.tile5,myTiles.tile8,sprites.dungeon.buttonOrange,sprites.dungeon.buttonTealDepressed], TileScale.Sixteen))
+    `, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile4,myTiles.tile3,myTiles.tile5,myTiles.tile8,sprites.dungeon.buttonOrange,sprites.dungeon.buttonTealDepressed,myTiles.tile9], TileScale.Sixteen))
 SpawnDuck()
+buttonX = []
+buttonTime = []
