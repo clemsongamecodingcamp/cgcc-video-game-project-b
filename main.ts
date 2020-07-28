@@ -72,6 +72,9 @@ function animate () {
         `
     catIdleRight = 0
 }
+function HardDiff () {
+    spawnRate = 900
+}
 game.onGameUpdateWithHeading(function () {
     if (Math.mod(game.runtime(), 2000) <= 40) {
         if (spawnRate > randint(0, 999)) {
@@ -109,6 +112,9 @@ game.onGameUpdateWithHeading(function () {
         }
     }
 })
+function EasyDiff () {
+    spawnRate = 250
+}
 function SpawnDuck () {
     spawnDuckSprite = sprites.create(img`
         . . . . . . . . . . b 5 b . . . 
@@ -169,10 +175,16 @@ let buttonX: number[] = []
 let playerSprite: Sprite = null
 let ducks: Sprite[] = []
 ducks = []
-let diff = 1
+let diff = game.askForNumber("")
 scene.centerCameraAt(0, 84)
+if (diff == 0) {
+    EasyDiff()
+} else if (diff == 2) {
+    HardDiff()
+} else {
+    NormalDiff()
+}
 animate()
-NormalDiff()
 info.setScore(0)
 info.setLife(3)
 info.startCountdown(6000)
