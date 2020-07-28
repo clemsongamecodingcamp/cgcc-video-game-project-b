@@ -79,7 +79,6 @@ game.onGameUpdateWithHeading(function () {
         }
     }
     controller.moveSprite(playerSprite)
-    info.setScore(sprites.speed(playerSprite))
     if (sprites.heading(playerSprite) > 15 && sprites.heading(playerSprite) < 165) {
         headingRight = 1
     }
@@ -94,6 +93,13 @@ game.onGameUpdateWithHeading(function () {
             sprites.setDataNumber(thisDuck, "direction", 1)
         }
         thisDuck.setVelocity(sprites.speed(thisDuck) * sprites.readDataNumber(thisDuck, "direction"), 0)
+        for (let index = 0; index <= buttonTime.length; index++) {
+            if (game.runtime() >= buttonTime[index]) {
+                tiles.setTileAt(tiles.getTileLocation(buttonX[index], 8), sprites.dungeon.buttonOrange)
+                buttonX.removeAt(index)
+                buttonTime.removeAt(index)
+            }
+        }
     }
 })
 function SpawnDuck () {
@@ -130,6 +136,7 @@ function Start_Screen () {
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (sprite, location) {
     buttonX.push(scene.getTileColCoordinate(location))
     buttonTime.push(game.runtime() + 3000)
+    tiles.setTileAt(location, sprites.dungeon.buttonTealDepressed)
 })
 function NormalDiff () {
     spawnRate = 500
