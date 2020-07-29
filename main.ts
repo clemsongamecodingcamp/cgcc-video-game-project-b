@@ -102,9 +102,7 @@ game.onGameUpdateWithHeading(function () {
             sprites.setDataNumber(thisDuck, "direction", 1)
         }
         thisDuck.setVelocity(sprites.speed(thisDuck) * sprites.readDataNumber(thisDuck, "direction"), 0)
-        console.log(sprites.readDataNumber(thisDuck, "lastLaser") + fireRate)
         if (sprites.readDataNumber(thisDuck, "lastLaser") + fireRate <= game.runtime()) {
-            console.log("fire")
             sprites.setDataNumber(thisDuck, "lastLaser", game.runtime())
             laser = sprites.createProjectileFromSprite(img`
                 . . . . . . . 7 7 . . . . . . . 
@@ -125,6 +123,12 @@ game.onGameUpdateWithHeading(function () {
                 . . . . . . . 7 7 . . . . . . . 
                 `, thisDuck, 0, laserSpeed)
             laser.setFlag(SpriteFlag.Ghost, true)
+            lasers.push(laser)
+        }
+    }
+    for (let value of lasers) {
+        if (value.y > 60) {
+            value.setFlag(SpriteFlag.Ghost, false)
         }
     }
     for (let index = 0; index <= buttonTime.length; index++) {
@@ -153,7 +157,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (s
 function EasyDiff () {
     spawnRate = 250
     laserSpeed = 0
-    fireRate = 0
+    fireRate = 9999999999999
 }
 function SpawnDuck () {
     spawnDuckSprite = sprites.create(img`
@@ -184,6 +188,10 @@ function SpawnDuck () {
     }
     spawnDuckSprite.setVelocity(randint(10, 30), 0)
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    otherSprite.destroy()
+})
 function Start_Screen () {
     game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
@@ -192,6 +200,12 @@ function NormalDiff () {
     laserSpeed = 10
     fireRate = 7000
 }
+sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
+    ducks.removeAt(ducks.indexOf(sprite))
+})
+sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
+    lasers.removeAt(lasers.indexOf(sprite))
+})
 let spawnDuckSprite: Sprite = null
 let laser: Sprite = null
 let headingRight = 0
@@ -207,8 +221,10 @@ let hatchX: number[] = []
 let buttonTime: number[] = []
 let buttonX: number[] = []
 let playerSprite: Sprite = null
+let lasers: Sprite[] = []
 let ducks: Sprite[] = []
 ducks = []
+lasers = []
 let diff = game.askForNumber("")
 scene.centerCameraAt(0, 84)
 if (diff == 0) {
