@@ -3,6 +3,10 @@ enum ActionKind {
     Idle,
     Jumping
 }
+scene.onOverlapTile(SpriteKind.Enemy, sprites.dungeon.hazardHole, function (sprite, location) {
+    sprite.destroy()
+    info.changeScoreBy(100)
+})
 function animate () {
     catWalkLeft = animation.createAnimation(ActionKind.Walking, 1000)
     catWalkLeft.addAnimationFrame(img`
@@ -119,6 +123,7 @@ game.onGameUpdateWithHeading(function () {
                 . . . . . . . 7 7 . . . . . . . 
                 . . . . . . . 7 7 . . . . . . . 
                 `, thisDuck, 0, laserSpeed)
+            laser.setFlag(SpriteFlag.Ghost, true)
         }
     }
     for (let index = 0; index <= buttonTime.length; index++) {
@@ -170,10 +175,6 @@ function SpawnDuck () {
     }
     spawnDuckSprite.setVelocity(randint(10, 30), 0)
 }
-scene.onOverlapTile(SpriteKind.Enemy, sprites.dungeon.hazardHole, function (sprite, location) {
-    sprite.destroy()
-    info.changeScoreBy(100)
-})
 function Start_Screen () {
     game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
