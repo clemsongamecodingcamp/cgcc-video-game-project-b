@@ -74,6 +74,8 @@ function animate () {
 }
 function HardDiff () {
     spawnRate = 900
+    laserSpeed = 20
+    fireRate = 5000
 }
 game.onGameUpdateWithHeading(function () {
     if (Math.mod(game.runtime(), 2000) <= 40) {
@@ -96,24 +98,48 @@ game.onGameUpdateWithHeading(function () {
             sprites.setDataNumber(thisDuck, "direction", 1)
         }
         thisDuck.setVelocity(sprites.speed(thisDuck) * sprites.readDataNumber(thisDuck, "direction"), 0)
-        for (let index = 0; index <= buttonTime.length; index++) {
-            if (game.runtime() >= buttonTime[index]) {
-                tiles.setTileAt(tiles.getTileLocation(buttonX[index], 8), sprites.dungeon.buttonOrange)
-                buttonX.removeAt(index)
-                buttonTime.removeAt(index)
-            }
+        console.log(sprites.readDataNumber(spawnDuckSprite, "lastLaser") + fireRate)
+        if (sprites.readDataNumber(spawnDuckSprite, "lastLaser") + fireRate <= game.runtime()) {
+            sprites.setDataNumber(spawnDuckSprite, "lastLaser", game.runtime())
+            laser = sprites.createProjectileFromSprite(img`
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . 7 7 . . . . . . . 
+                `, thisDuck, 0, laserSpeed)
         }
-        for (let index = 0; index <= hatchTime.length; index++) {
-            if (game.runtime() >= hatchTime[index]) {
-                tiles.setTileAt(tiles.getTileLocation(hatchX[index], 2), myTiles.tile3)
-                hatchX.removeAt(index)
-                hatchTime.removeAt(index)
-            }
+    }
+    for (let index = 0; index <= buttonTime.length; index++) {
+        if (game.runtime() >= buttonTime[index]) {
+            tiles.setTileAt(tiles.getTileLocation(buttonX[index], 8), sprites.dungeon.buttonOrange)
+            buttonX.removeAt(index)
+            buttonTime.removeAt(index)
+        }
+    }
+    for (let index = 0; index <= hatchTime.length; index++) {
+        if (game.runtime() >= hatchTime[index]) {
+            tiles.setTileAt(tiles.getTileLocation(hatchX[index], 2), myTiles.tile3)
+            hatchX.removeAt(index)
+            hatchTime.removeAt(index)
         }
     }
 })
 function EasyDiff () {
     spawnRate = 250
+    laserSpeed = 0
+    fireRate = 0
 }
 function SpawnDuck () {
     spawnDuckSprite = sprites.create(img`
@@ -136,6 +162,7 @@ function SpawnDuck () {
         `, SpriteKind.Enemy)
     ducks.push(spawnDuckSprite)
     tiles.placeOnTile(spawnDuckSprite, tiles.getTileLocation(randint(0, 9), 2))
+    sprites.setDataNumber(spawnDuckSprite, "lastLaser", game.runtime())
     if (Math.percentChance(50)) {
         sprites.setDataNumber(spawnDuckSprite, "direction", -1)
     } else {
@@ -160,9 +187,14 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (s
 })
 function NormalDiff () {
     spawnRate = 500
+    laserSpeed = 10
+    fireRate = 7000
 }
+let laser: Sprite = null
 let spawnDuckSprite: Sprite = null
 let headingRight = 0
+let fireRate = 0
+let laserSpeed = 0
 let spawnRate = 0
 let catIdleRight = 0
 let catIdleLeft: Image = null
