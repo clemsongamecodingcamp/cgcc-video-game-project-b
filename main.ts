@@ -102,9 +102,10 @@ game.onGameUpdateWithHeading(function () {
             sprites.setDataNumber(thisDuck, "direction", 1)
         }
         thisDuck.setVelocity(sprites.speed(thisDuck) * sprites.readDataNumber(thisDuck, "direction"), 0)
-        console.log(sprites.readDataNumber(spawnDuckSprite, "lastLaser") + fireRate)
-        if (sprites.readDataNumber(spawnDuckSprite, "lastLaser") + fireRate <= game.runtime()) {
-            sprites.setDataNumber(spawnDuckSprite, "lastLaser", game.runtime())
+        console.log(sprites.readDataNumber(thisDuck, "lastLaser") + fireRate)
+        if (sprites.readDataNumber(thisDuck, "lastLaser") + fireRate <= game.runtime()) {
+            console.log("fire")
+            sprites.setDataNumber(thisDuck, "lastLaser", game.runtime())
             laser = sprites.createProjectileFromSprite(img`
                 . . . . . . . 7 7 . . . . . . . 
                 . . . . . . . 7 7 . . . . . . . 
@@ -133,13 +134,21 @@ game.onGameUpdateWithHeading(function () {
             buttonTime.removeAt(index)
         }
     }
-    for (let index = 0; index <= hatchTime.length; index++) {
-        if (game.runtime() >= hatchTime[index]) {
-            tiles.setTileAt(tiles.getTileLocation(hatchX[index], 2), myTiles.tile3)
-            hatchX.removeAt(index)
-            hatchTime.removeAt(index)
+    for (let index2 = 0; index2 <= hatchTime.length; index2++) {
+        if (game.runtime() >= hatchTime[index2]) {
+            tiles.setTileAt(tiles.getTileLocation(hatchX[index2], 2), myTiles.tile3)
+            hatchX.removeAt(index2)
+            hatchTime.removeAt(index2)
         }
     }
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (sprite, location) {
+    buttonX.push(scene.getTileColCoordinate(location))
+    buttonTime.push(game.runtime() + 5000)
+    hatchX.push(scene.getTileColCoordinate(location))
+    hatchTime.push(game.runtime() + 500)
+    tiles.setTileAt(location, sprites.dungeon.buttonTealDepressed)
+    tiles.setTileAt(tiles.getTileLocation(scene.getTileColCoordinate(location), 2), sprites.dungeon.hazardHole)
 })
 function EasyDiff () {
     spawnRate = 250
@@ -178,21 +187,13 @@ function SpawnDuck () {
 function Start_Screen () {
     game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
-scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (sprite, location) {
-    buttonX.push(scene.getTileColCoordinate(location))
-    buttonTime.push(game.runtime() + 5000)
-    hatchX.push(scene.getTileColCoordinate(location))
-    hatchTime.push(game.runtime() + 500)
-    tiles.setTileAt(location, sprites.dungeon.buttonTealDepressed)
-    tiles.setTileAt(tiles.getTileLocation(scene.getTileColCoordinate(location), 2), sprites.dungeon.hazardHole)
-})
 function NormalDiff () {
     spawnRate = 500
     laserSpeed = 10
     fireRate = 7000
 }
-let laser: Sprite = null
 let spawnDuckSprite: Sprite = null
+let laser: Sprite = null
 let headingRight = 0
 let fireRate = 0
 let laserSpeed = 0
