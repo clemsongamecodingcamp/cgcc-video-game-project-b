@@ -3,10 +3,6 @@ enum ActionKind {
     Idle,
     Jumping
 }
-scene.onOverlapTile(SpriteKind.Enemy, sprites.dungeon.hazardHole, function (sprite, location) {
-    sprite.destroy()
-    info.changeScoreBy(100)
-})
 function animate () {
     catWalkLeft = animation.createAnimation(ActionKind.Walking, 1000)
     catWalkLeft.addAnimationFrame(img`
@@ -105,6 +101,10 @@ game.onGameUpdateWithHeading(function () {
         if (sprites.readDataNumber(thisDuck, "lastLaser") + fireRate <= game.runtime()) {
             sprites.setDataNumber(thisDuck, "lastLaser", game.runtime())
             laser = sprites.createProjectileFromSprite(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . 7 7 . . . . . . . 
                 . . . . . . . 7 7 . . . . . . . 
                 . . . . . . . 7 7 . . . . . . . 
@@ -113,14 +113,10 @@ game.onGameUpdateWithHeading(function () {
                 . . . . . . . 7 7 . . . . . . . 
                 . . . . . . . 7 7 . . . . . . . 
                 . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
-                . . . . . . . 7 7 . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
                 `, thisDuck, 0, laserSpeed)
             laser.setFlag(SpriteFlag.Ghost, true)
             lasers.push(laser)
@@ -145,14 +141,6 @@ game.onGameUpdateWithHeading(function () {
             hatchTime.removeAt(index2)
         }
     }
-})
-scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (sprite, location) {
-    buttonX.push(scene.getTileColCoordinate(location))
-    buttonTime.push(game.runtime() + 5000)
-    hatchX.push(scene.getTileColCoordinate(location))
-    hatchTime.push(game.runtime() + 500)
-    tiles.setTileAt(location, sprites.dungeon.buttonTealDepressed)
-    tiles.setTileAt(tiles.getTileLocation(scene.getTileColCoordinate(location), 2), sprites.dungeon.hazardHole)
 })
 function EasyDiff () {
     spawnRate = 250
@@ -192,9 +180,21 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     info.changeLifeBy(-1)
     otherSprite.destroy()
 })
+scene.onOverlapTile(SpriteKind.Enemy, sprites.dungeon.hazardHole, function (sprite, location) {
+    sprite.destroy()
+    info.changeScoreBy(100)
+})
 function Start_Screen () {
     game.showLongText("This is my game. - By a Clemson First-Year Student", DialogLayout.Bottom)
 }
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (sprite, location) {
+    buttonX.push(scene.getTileColCoordinate(location))
+    buttonTime.push(game.runtime() + 5000)
+    hatchX.push(scene.getTileColCoordinate(location))
+    hatchTime.push(game.runtime() + 500)
+    tiles.setTileAt(location, sprites.dungeon.buttonTealDepressed)
+    tiles.setTileAt(tiles.getTileLocation(scene.getTileColCoordinate(location), 2), sprites.dungeon.hazardHole)
+})
 function NormalDiff () {
     spawnRate = 500
     laserSpeed = 10
