@@ -98,6 +98,9 @@ game.onGameUpdateWithHeading(function () {
             sprites.setDataNumber(thisDuck, "direction", 1)
         }
         thisDuck.setVelocity(sprites.speed(thisDuck) * sprites.readDataNumber(thisDuck, "direction"), 0)
+        if (thisDuck.vx == 0) {
+            thisDuck.setVelocity(randint(10, 30) * sprites.readDataNumber(thisDuck, "direction"), 0)
+        }
         if (sprites.readDataNumber(thisDuck, "lastLaser") + fireRate <= game.runtime()) {
             sprites.setDataNumber(thisDuck, "lastLaser", game.runtime())
             laser = sprites.createProjectileFromSprite(img`
